@@ -1,51 +1,57 @@
 import psycopg2
-
-
-def mydbConnection(host_name, user_name, user_password,database,port):
-    connection = psycopg2.connect(
-            host=host_name,
-            user=user_name,
-            password=user_password,
-            database=database,
-            port=port
-        )
-    return connection
-
-connection = mydbConnection("localhost", "postgres", "root","abhinav","1995")
-
-
-def mydbSave(connection):
-  rollno = int(input("Enter roll no. "))
-  name = input("Enter Name ")
-  marks = int(input("Enter marks. "))
-  fees = int(input("Enter fees "))
-  cursor = connection.cursor()
-  sql= "insert into student(rollno, name, marks, fees) values({},'{}',{},{})" .format(rollno,name,marks,fees)
+import sys
+def data_connection(sql):
+  database=input("enter database name: ")
+  conn = psycopg2.connect(host='localhost',user='postgres',password='root',port='1995',database=database)
+  cursor = conn.cursor()
+  sql=sql
   cursor.execute(sql)
-  connection.commit()
-  print("Database created successfully")
-  return connection
 
-def get(connection):
-  cursor=connection.cursor()
-  sql="select * from student"
-  cursor.execute(sql)
-  show=cursor.fetchall()
-  print(show)
+  a=input('''Enter 1 number if you want to save:\nEnter 2nd number if you want show all data\nEnter 3 if you want to delete:  ''')
+  if a=="1":
+    conn.commit()
+  
+  elif a=="2":
+    show= cursor.fetchall()
+    print(show)
 
+  elif a=="3":
+    conn.commit()
 
-
-def delete(connection):
-  rollno=int(input("Enter rool no you want to delete= "))
-  cursor=connection.cursor()
-  sql="delete from student where rollno={0}".format(rollno)
-  cursor.execute(sql)
-  connection.commit()
-  print("1 row sucessfully delete")
-  return connection
+  conn.close()
+  return cursor
+  
 
   
 
-mydbSave(connection)
-get(connection)
-delete(connection)
+def save(rollno,name,marks,fees):
+  
+  sql="insert into student(rollno, name, marks, fees) values({},'{}',{},{})" .format(rollno,name,marks,fees)
+  data_connection(sql)
+  print('data created sucessfull')
+
+
+
+def delete(rno):
+  sql="delete from student where rollno={0}".format(rno)
+  data_connection(sql)
+  print("1 row sucessfully delete")
+
+
+def get():
+  sql="select * from student"
+  data_connection(sql)
+  
+
+      
+
+#save(786,'Rajkumar',90,678)
+
+#delete(189)
+
+#get()
+
+
+
+
+
