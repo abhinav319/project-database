@@ -24,7 +24,13 @@ def data_connection(sql):
 
   
 
-def save(rollno,name,marks,fees):
+def save():
+  rollno=sys.argv[1]
+  name=sys.argv[2]
+  marks=sys.argv[3]
+  fees=sys.argv[4]
+  
+  
   
   sql="insert into student(rollno, name, marks, fees) values({},'{}',{},{})" .format(rollno,name,marks,fees)
   data_connection(sql)
@@ -32,8 +38,9 @@ def save(rollno,name,marks,fees):
 
 
 
-def delete(rno):
-  sql="delete from student where rollno={0}".format(rno)
+def delete():
+  rollno=sys.argv[1]
+  sql="delete from student where rollno={0}".format(rollno)
   data_connection(sql)
   print("1 row sucessfully delete")
 
@@ -44,12 +51,10 @@ def get():
   
 
       
+save()
+get()
+delete()
 
-#save(786,'Rajkumar',90,678)
-
-#delete(189)
-
-#get()
 
 
 
